@@ -1,8 +1,5 @@
 class PassengersController < ApplicationController
-
   before_action :find_passenger, only: [:show, :edit, :destroy, :update, :complete_trip]
-
-
 
   def index
     @passengers = Passenger.order(:name).page params[:page]
@@ -20,6 +17,9 @@ class PassengersController < ApplicationController
 
     if passenger.save
       redirect_to passengers_path
+    else
+      flash[:alert] = "Unable to create a passenger"
+      redirect_back(fallback_location: new_passenger_path)
     end
   end
 
@@ -32,11 +32,13 @@ class PassengersController < ApplicationController
 
     if @passenger.save
       redirect_to passenger_path(@passenger.id)
+    else
+      flash[:alert] = "Unable to update a passenger with id: #{params[:id]}"
+      redirect_back(fallback_location: edit_passenger_path(params[:id]))
     end
   end
 
   def destroy
-
     @passenger.trips.each do |trip|
       trip.destroy
     end
@@ -53,10 +55,17 @@ class PassengersController < ApplicationController
   end
 
   private
-    def find_passenger
-      @passenger = Passenger.find(params[:id])
+
+  def find_passenger
+    @passenger = Passenger.find_by(id: params[:id])
+
+    if @passenger.nil?
+      flash[:alert] = "Unable to find passenger with id: #{params[:id]}"
+      redirect_to passengers_path
     end
-    def passenger_params
-        params.require(:passenger).permit(:name, :phone_number)
-    end
+  end
+
+  def passenger_params
+    params.require(:passenger).permit(:name, :phone_number)
+  end
 end

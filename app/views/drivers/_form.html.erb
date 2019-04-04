@@ -1,26 +1,22 @@
-<section class="driver form">
-  <%= form_for @driver do |f| %>
-    <div class="row">
-      <div class="small-6 columns">
+<section class="driver-form form">
+  <%= form_for @driver, html: { class: "driver-form" } do |f| %>
+    <div class="driver-form-name">
         <%= f.label :name, "Driver Name:  " %>
         <%= f.text_field :name %>
-      </div>
-      <div class="small-6 columns">
-        <%= f.label :vin, "Vin Number" %>
-        <%= f.text_field :vin %>
-      </div>
     </div>
-  <div class="row">
-    <div class="small-6 columns">
+    <div class="driver-form-vin">
+      <%= f.label :vin, "Vin Number" %>
+      <%= f.text_field :vin %>
+    </div>
+    <div class="driver-form-make">
       <%= f.label :car_make, "Car Make" %>
       <%= f.select(:car_make) do %>
-      <% (Driver.all.collect { |m| m.car_make}).uniq.each do |make| %>
-        <%= content_tag(:option, make, value: make, selected: make == @driver.car_make) %>
+        <% (Driver.all.collect { |m| m.car_make}).uniq.each do |make| %>
+          <%= content_tag(:option, make, value: make, selected: make == @driver.car_make) %>
+        <% end %>
       <% end %>
-    <% end %>
-  </div>
-  <div class="rows">
-    <div class="small-6 columns">
+    </div>
+    <div class="driver-form-model">      
       <%= f.label :car_model, "Car Model" %>
       <%= f.select(:car_model) do %>
         <% (Driver.all.collect { |m| m.car_model}).uniq.each do |model| %>
@@ -28,11 +24,8 @@
         <% end %>
       <% end %>
     </div>
-  </div>
-  <div class="rows">
-    <div class="submit-btn small-12 columns">
+    <div class="driver-form-submit">
       <%= f.submit action_name %>
     </div>
-  </div>
 <% end %>
 </section>

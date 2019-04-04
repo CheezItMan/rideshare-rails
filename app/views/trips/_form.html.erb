@@ -1,19 +1,19 @@
 <section class="trip form">
-  <%= form_for @trip, url: url do |f| %>
-    <div class="row">
-      <div class  ="small-6 columns">
-        <%= f.label :date, "Date:  " %>
-        <%= f.date_select :date %>
-      </div>
-      <div class="small-6 columns">
-        <%= f.label :rating, "Rating" %>
-        <%= f.number_field :rating %>
-        <%= f.label :price, "Price" %>
-        <%= f.number_field :price, value: number_to_currency(f.object.price.to_f, delimiter: '', unit: ''), step: :any %>
-      </div>
+  <%= form_for @trip, url: url, html: {class: "trip-form"} do |f| %>
+    <div class="trip-form-date">
+      <%= f.label :date, "Date:  " %>
+      <%= f.date_select :date %>
     </div>
-  <div class="row">
-    <div class="small-6 columns">
+    <div class="trip-form-rating">
+      <%= f.label :rating, "Rating" %>
+      <%= f.number_field :rating %>
+    </div>
+    <div class="trip-form-price">
+      <%= f.label :price, "Price" %>
+      <%= f.number_field :price, value: number_to_currency(f.object.price.to_f, delimiter: '', unit: ''), step: :any %>
+    </div>
+    
+    <div class="trip-form-driver">
       <%= f.label :driver_id, "Driver" %>
       <%= f.select(:driver_id) do %>
         <% (Driver.all.order(:name).collect { |d| [d.name, d.id]}).uniq.each do |driver| %>
@@ -21,7 +21,7 @@
         <% end %>
       <% end %>
     </div>
-    <div class="small-6 columns">
+    <div class="trip-form-passenger">
       <%# Don't let them change the passenger %>
       <%= f.label :passenger_id, "Passenger" %>
       <%= f.select(:passenger_id) do %>
@@ -30,11 +30,8 @@
         <% end %>
       <% end %>
     </div>
-  </div>
-  <div class="row">
-    <div class="submit-btn small-12 columns">
+    <div class="trip-form-submit">
       <%= f.submit action_name %>
     </div>
-  </div>
 <% end %>
 </section>

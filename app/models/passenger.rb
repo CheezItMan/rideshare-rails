@@ -1,6 +1,8 @@
 class Passenger < ApplicationRecord
   has_many :trips
 
+  validates :name, presence: true
+
   def can_request?
     trips.ongoing.count == 0
   end

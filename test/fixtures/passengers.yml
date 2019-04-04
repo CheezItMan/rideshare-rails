@@ -1,9 +1,7 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+ada: 
+  name: Ada Lovelace
+  phone_number: 111-111-1111
 
-one:
-  name: MyString
-  phone_num: MyString
-
-two:
-  name: MyString
-  phone_num: MyString
+grace:
+  name: Grace Hopper
+  phone_number: 222-222-2222

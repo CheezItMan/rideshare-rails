@@ -1,13 +1,14 @@
-# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+dan: 
+  name: Dan Roberts
+  vin: 111111111
+  car_make: Honda
+  car_model: Nova
+  active: true
 
-one:
-  name: MyString
-  vin: MyString
-  car_make: MyString
-  car_model: MyString
-
-two:
-  name: MyString
-  vin: MyString
-  car_make: MyString
-  car_model: MyString
+dee: 
+  name: Dee Del Rosario
+  vin: 22222
+  car_make: Tesla
+  car_model: Model 3
+  active: false
+  

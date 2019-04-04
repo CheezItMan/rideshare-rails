@@ -1,8 +1,8 @@
 class TripsController < ApplicationController
-    before_action :find_trip, only: [:show, :edit, :destroy, :update]
-    before_action :find_passenger, only: [:create]
+  before_action :find_trip, only: [:show, :edit, :destroy, :update]
+  before_action :find_passenger, only: [:create]
 
-  def show;  end
+  def show; end
 
   def edit
   end
@@ -16,16 +16,19 @@ class TripsController < ApplicationController
 
     if @trip.save
       redirect_to passenger_trip_path(@trip.passenger.id, @trip.id)
+    else
+      redirect_back(fallback_location: edit_trip_path(@trip.id))
     end
   end
 
   def destroy
-    @trip = Trip.find(params[:id])
-    @trip.destroy
-    if ! request.referer.include?( passenger_trip_path(@trip.passenger.id, @trip.id))
-      redirect_to request.referer
-    else
-      redirect_to passenger_path(@trip.passenger.id)
+    if @trip
+      @trip.destroy
+      if request.referer && !request.referer.include?(passenger_trip_path(@trip.passenger.id, @trip.id))
+        redirect_to request.referer
+      else
+        redirect_to passenger_path(@trip.passenger.id)
+      end
     end
   end
 
@@ -41,18 +44,28 @@ class TripsController < ApplicationController
   end
 
   private
-    def find_trip
-      @trip = Trip.find(params[:id])
-    end
 
-    def find_passenger
-      @passenger = Passenger.find(params[:passenger_id])
-    end
+  def find_trip
+    @trip = Trip.find_by(id: params[:id])
 
-    def trip_params
-        trip = params[:trip]
-        params[:trip]["date"] = Date.new trip["date(1i)"].to_i, trip["date(2i)"].to_i, trip["date(3i)"].to_i
-        params.require(:trip).permit(:date, :rating, :driver_id, :passenger_id, :price, :rating)
+    if @trip.nil?
+      flash[:alert] = "Cannot find the trip"
+      redirect_back(fallback_location: root_path)
     end
+  end
 
+  def find_passenger
+    @passenger = Passenger.find_by(id: params[:passenger_id])
+
+    if @passenger.nil?
+      flash[:alert] = "Missing passenger"
+      redirect_back(fallback_location: passengers_path)
+    end
+  end
+
+  def trip_params
+    trip = params[:trip]
+    params[:trip]["date"] = Date.new trip["date(1i)"].to_i, trip["date(2i)"].to_i, trip["date(3i)"].to_i
+    params.require(:trip).permit(:date, :rating, :driver_id, :passenger_id, :price, :rating)
+  end
 end

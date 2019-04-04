@@ -1,2 +1,0 @@
-class RideRequestError < StandardError
-end

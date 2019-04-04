@@ -6,8 +6,8 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-require 'vinbot'
-require 'faker'
+require "vinbot"
+require "faker"
 
 CARS = [["Honda", "Accord"], ["Tesla", "Model X"], ["Chevy", "Nova"], ["Honda", "Civic"], ["VW", "Beetle (old)"], ["VW", "Beetle (new)"], ["Chrystler", "PT Cruiser"], ["Ford", "Pinto"]]
 
@@ -16,7 +16,7 @@ passengers = []
 
 50.times do
   car = CARS.sample
-  driver = Driver.new name: Faker::LordOfTheRings.character, vin: Vinbot::Vin.generate, car_make: car[0], car_model: car[1], active: rand(100) > 70
+  driver = Driver.new name: Faker::Movies::LordOfTheRings.character, vin: Vinbot::Vin.generate, car_make: car[0], car_model: car[1], active: rand(100) > 70
 
   while Driver.find_by(name: driver.name) != nil
     driver.name = Faker::Name.name
@@ -26,7 +26,7 @@ passengers = []
 end
 
 150.times do
-  passenger = Passenger.new name: Faker::HarryPotter.character, phone_number: Faker::PhoneNumber.cell_phone
+  passenger = Passenger.new name: Faker::Movies::HarryPotter.character, phone_number: Faker::PhoneNumber.cell_phone
 
   passenger.save
   passengers.push(passenger)
@@ -45,7 +45,7 @@ end
 end
 
 # Create some ongoing trips, leaving a few available drivers
-active_drivers = drivers.select {|d| d.active?}
+active_drivers = drivers.select { |d| d.active? }
 ongoing_trips = drivers.length - [rand(5..15), active_drivers.length].min
 
 passengers.sample(ongoing_trips).zip(active_drivers.sample(ongoing_trips)).each do |passenger, driver|

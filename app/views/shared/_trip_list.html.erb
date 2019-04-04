@@ -58,7 +58,7 @@
         </td>
         <td>
           <p>
-            <%= link_to "Delete",  passenger_trip_path(trip.passenger.id, trip.id), method: :delete %>
+            <%= link_to "Delete",  trip_path(trip.id), method: :delete %>
             <%= link_to "Edit", edit_passenger_trip_path(trip.passenger.id, trip.id) %>
           </p>
         </td>
